@@ -158,7 +158,7 @@ func fuse<A>(_ tree1: Tree<A>, _ tree2: Tree<A>) -> Tree<A> {
     let s = fuse(t2, t3)
     switch s {
     case let .T(.R, s1, z, s2):
-      return .T(.R, .T(.R, t1, x, s1), z, .T(.R, s2, y, t4))
+      return .T(.R, .T(.B, t1, x, s1), z, .T(.B, s2, y, t4))
     case .T(.B, _, _, _):
       return balL(.T(.B, t1, x, .T(.B, s, y, t4)))
     default:
