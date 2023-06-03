@@ -188,8 +188,8 @@ func delete<A>(item x: A, tree t: Tree<A>) -> Tree<A> {
     switch it {
     case let .T(_, a, y, b):
       return .T(.B, a, y, b)
-    default:
-      fatalError("diverge in delete")
+    case .E:
+      return .E
     }
   }
   return makeBlack(del(x, t))
