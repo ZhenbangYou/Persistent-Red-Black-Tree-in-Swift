@@ -5,12 +5,12 @@ enum Color {
 }
 
 @frozen
-indirect enum Tree<A> {
+indirect enum Tree<A: Comparable> {
   case E
   case T(Color, Tree<A>, A, Tree<A>)
 }
 
-func member<A: Comparable>(item x: A, tree: Tree<A>) -> Bool {
+func member<A>(item x: A, tree: Tree<A>) -> Bool {
   switch tree {
   case .E: return false
   case let .T(_, a, y, b):
@@ -24,9 +24,7 @@ func member<A: Comparable>(item x: A, tree: Tree<A>) -> Bool {
   }
 }
 
-func balance<A: Comparable>(color: Color, leftChild: Tree<A>, mid: A, rightChild: Tree<A>) -> Tree<
-  A
-> {
+func balance<A>(color: Color, leftChild: Tree<A>, mid: A, rightChild: Tree<A>) -> Tree<A> {
   switch (color, leftChild, mid, rightChild) {
   case let (.B, .T(.R, .T(.R, a, x, b), y, c), z, d):
     return .T(.R, .T(.B, a, x, b), y, .T(.B, c, z, d))
@@ -41,7 +39,7 @@ func balance<A: Comparable>(color: Color, leftChild: Tree<A>, mid: A, rightChild
   }
 }
 
-func insert<A: Comparable>(item x: A, tree s: Tree<A>) -> Tree<A> {
+func insert<A>(item x: A, tree s: Tree<A>) -> Tree<A> {
   func ins(_ it: Tree<A>) -> Tree<A> {
     switch it {
     case .E:
@@ -67,7 +65,7 @@ func insert<A: Comparable>(item x: A, tree s: Tree<A>) -> Tree<A> {
   return makeBlack(innerTree: ins(s))
 }
 
-func del<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
+func del<A>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   switch t {
   case let .T(_, l, y, r):
     if x < y {
@@ -82,7 +80,7 @@ func del<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   }
 }
 
-func balL<A: Comparable>(_ tree: Tree<A>) -> Tree<A> {
+func balL<A>(_ tree: Tree<A>) -> Tree<A> {
   switch tree {
   case let .T(.B, .T(.R, t1, x, t2), y, t3):
     return .T(.R, .T(.B, t1, x, t2), y, t3)
@@ -100,7 +98,7 @@ func balL<A: Comparable>(_ tree: Tree<A>) -> Tree<A> {
   }
 }
 
-func balR<A: Comparable>(_ tree: Tree<A>) -> Tree<A> {
+func balR<A>(_ tree: Tree<A>) -> Tree<A> {
   switch tree {
   case let .T(.B, t1, y, .T(.R, t2, x, t3)):
     return .T(.R, t1, y, .T(.B, t2, x, t3))
@@ -118,7 +116,7 @@ func balR<A: Comparable>(_ tree: Tree<A>) -> Tree<A> {
   }
 }
 
-func delL<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
+func delL<A>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   switch t {
   case let .T(.B, t1, y, t2):
     return balL(.T(.B, del(x, t1), y, t2))
@@ -129,7 +127,7 @@ func delL<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   }
 }
 
-func delR<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
+func delR<A>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   switch t {
   case let .T(.B, t1, y, t2):
     return balR(.T(.B, t1, y, del(x, t2)))
@@ -140,7 +138,7 @@ func delR<A: Comparable>(_ x: A, _ t: Tree<A>) -> Tree<A> {
   }
 }
 
-func fuse<A: Comparable>(_ tree1: Tree<A>, _ tree2: Tree<A>) -> Tree<A> {
+func fuse<A>(_ tree1: Tree<A>, _ tree2: Tree<A>) -> Tree<A> {
   switch (tree1, tree2) {
   case let (.E, t):
     return t
@@ -185,7 +183,7 @@ func fuse<A: Comparable>(_ tree1: Tree<A>, _ tree2: Tree<A>) -> Tree<A> {
   }
 }
 
-func delete<A: Comparable>(item x: A, tree t: Tree<A>) -> Tree<A> {
+func delete<A>(item x: A, tree t: Tree<A>) -> Tree<A> {
   func makeBlack(_ it: Tree<A>) -> Tree<A> {
     switch it {
     case let .T(_, a, y, b):
